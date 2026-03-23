@@ -1,18 +1,96 @@
 <x-layouts::app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+    <div class="flex h-full w-full flex-1 flex-col gap-6 rounded-3xl p-4 md:p-6">
+        <section class="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div class="max-w-3xl space-y-3">
+                    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-500 dark:text-blue-300">Implementation foundation</p>
+                    <h1 class="text-3xl font-semibold text-zinc-950 dark:text-white">Small-company leave management, shaped around the README vision.</h1>
+                    <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                        The project now has the core PTO domain schema, initial leave types, seeded demo users, and a dashboard
+                        that reflects the agreed v1 policies for accruals, approval flow, and shared visibility.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-100">
+                    MySQL-ready configuration is included via the environment defaults.
+                </div>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+        </section>
+
+        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Active employees</p>
+                <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ $stats['employees'] }}</p>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+            <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Active leave types</p>
+                <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ $stats['leaveTypes'] }}</p>
             </div>
-        </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-        </div>
+            <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Pending requests</p>
+                <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ $stats['pendingRequests'] }}</p>
+            </div>
+            <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Accrued PTO seeded</p>
+                <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ number_format((float) $stats['ptoAccruals'], 1) }}</p>
+            </div>
+        </section>
+
+        <section class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <div class="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">Upcoming requests</h2>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">Sample requests seeded from the new leave domain tables.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 space-y-4">
+                    @forelse ($upcomingRequests as $request)
+                        <div class="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+                            <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                                <div>
+                                    <p class="font-medium text-zinc-950 dark:text-white">{{ $request->user->name }}</p>
+                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $request->start_date->format('M j, Y') }} - {{ $request->end_date->format('M j, Y') }}</p>
+                                </div>
+                                <span class="inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold" style="background-color: {{ $request->leaveType->color }}20; color: {{ $request->leaveType->color }};">
+                                    {{ $request->leaveType->name }} · {{ ucfirst($request->status) }}
+                                </span>
+                            </div>
+                            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-300">{{ $request->total_days }} day(s) · {{ str_replace('_', ' ', $request->duration_type) }}</p>
+                        </div>
+                    @empty
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">No leave requests have been created yet.</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                    <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">V1 business rules</h2>
+                    <ul class="mt-4 space-y-3 text-sm text-zinc-600 dark:text-zinc-300">
+                        @foreach ($rules as $rule)
+                            <li class="flex gap-3">
+                                <span class="mt-1 size-2 rounded-full bg-blue-500"></span>
+                                <span>{{ $rule }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                    <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">Leave catalog</h2>
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        @foreach ($leaveTypes as $leaveType)
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" style="background-color: {{ $leaveType->color }}20; color: {{ $leaveType->color }};">
+                                {{ $leaveType->name }}
+                                @if ($leaveType->consumes_pto)
+                                    <span class="ml-2 rounded-full bg-white/70 px-2 py-0.5 text-[11px] uppercase tracking-wide dark:bg-zinc-950/50">Uses PTO</span>
+                                @endif
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </x-layouts::app>
