@@ -13,6 +13,14 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Overview') }}
                 </flux:navbar.item>
+                @if (auth()->user()->isAdmin())
+                <flux:navbar.item icon="users" :href="route('admin.employees')" :current="request()->routeIs('admin.employees')" wire:navigate>
+                    {{ __('Active employees') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="check-circle" :href="route('admin.approvals')" :current="request()->routeIs('admin.approvals')" wire:navigate>
+                    {{ __('Approve requests') }}
+                </flux:navbar.item>
+            @endif
             </flux:navbar>
 
             <flux:spacer />
@@ -48,6 +56,15 @@
                         {{ __('Overview')  }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                    @if (auth()->user()->isAdmin())
+                        <flux:sidebar.item icon="users" :href="route('admin.employees')" :current="request()->routeIs('admin.employees')" wire:navigate>
+                            {{ __('Active employees') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="check-circle" :href="route('admin.approvals')" :current="request()->routeIs('admin.approvals')" wire:navigate>
+                            {{ __('Approve requests') }}
+                        </flux:sidebar.item>
+                    @endif
             </flux:sidebar.nav>
 
             <flux:spacer />

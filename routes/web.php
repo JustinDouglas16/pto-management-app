@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Models\LeaveRequest;
 use App\Models\LeaveType;
@@ -40,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('leave-requests', [LeaveRequestController::class, 'index'])->name('leave-requests.index');
     Route::get('leave-requests/create', [LeaveRequestController::class, 'create'])->name('leave-requests.create');
     Route::post('leave-requests', [LeaveRequestController::class, 'store'])->name('leave-requests.store');
+
+    Route::get('admin/employees', [AdminController::class, 'employees'])->name('admin.employees');
+    Route::get('admin/approvals', [AdminController::class, 'approvals'])->name('admin.approvals');
+    Route::patch('admin/approvals/{leaveRequest}', [AdminController::class, 'updateApproval'])->name('admin.approvals.update');
 });
 
 require __DIR__.'/settings.php';

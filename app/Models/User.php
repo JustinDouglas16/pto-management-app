@@ -46,6 +46,12 @@ class User extends Authenticatable
         return $this->hasMany(PtoTransaction::class);
     }
 
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['admin', 'super_admin'], true);
+    }
+
     /**
      * Get the user's initials
      */
