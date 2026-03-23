@@ -47,20 +47,20 @@
 
                 <div class="mt-6 space-y-4">
                     @forelse ($upcomingRequests as $request)
-                        <div class="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
-                            <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                                <div>
-                                    <p class="font-medium text-zinc-950 dark:text-white">{{ auth()->user()->name }}</p>
-                                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $request->start_date->format('M j, Y') }} - {{ $request->end_date->format('M j, Y') }}</p>
-                                </div>
-                                <span class="inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold" style="background-color: {{ $request->leaveType->color }}20; color: {{ $request->leaveType->color }};">
-                                    {{ $request->leaveType->name }} · {{ ucfirst($request->status) }}
-                                </span>
+                    <div class="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                            <div>
+                                <p class="font-medium text-zinc-950 dark:text-white">{{ auth()->user()->name }}</p>
+                                <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $request->start_date->format('M j, Y') }} - {{ $request->end_date->format('M j, Y') }}</p>
                             </div>
-                            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-300">{{ $request->total_days }} day(s) · {{ str_replace('_', ' ', $request->duration_type) }}</p>
+                            <span class="inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold" style="background-color: {{ $request->leaveType->color }}20; color: {{ $request->leaveType->color }};">
+                                {{ $request->leaveType->name }} · {{ ucfirst($request->status) }}
+                            </span>
                         </div>
+                        <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-300">{{ $request->total_days }} day(s) · {{ str_replace('_', ' ', $request->duration_type) }}</p>
+                    </div>
                     @empty
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">You have not submitted any leave requests yet.</p>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">You have not submitted any leave requests yet.</p>
                     @endforelse
                 </div>
             </div>
@@ -70,10 +70,10 @@
                     <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">V1 business rules</h2>
                     <ul class="mt-4 space-y-3 text-sm text-zinc-600 dark:text-zinc-300">
                         @foreach ($rules as $rule)
-                            <li class="flex gap-3">
-                                <span class="mt-1 size-2 rounded-full bg-blue-500"></span>
-                                <span>{{ $rule }}</span>
-                            </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 size-2 rounded-full bg-blue-500"></span>
+                            <span>{{ $rule }}</span>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -82,12 +82,12 @@
                     <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">Leave catalog</h2>
                     <div class="mt-4 flex flex-wrap gap-3">
                         @foreach ($leaveTypes as $leaveType)
-                            <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" style="background-color: {{ $leaveType->color }}20; color: {{ $leaveType->color }};">
-                                {{ $leaveType->name }}
-                                @if ($leaveType->consumes_pto)
-                                    <span class="ml-2 rounded-full bg-white/70 px-2 py-0.5 text-[11px] uppercase tracking-wide dark:bg-zinc-950/50">Uses PTO</span>
-                                @endif
-                            </span>
+                        <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" style="background-color: {{ $leaveType->color }}20; color: {{ $leaveType->color }};">
+                            {{ $leaveType->name }}
+                            @if ($leaveType->consumes_pto)
+                            <span class="ml-2 rounded-full bg-white/70 px-2 py-0.5 text-[11px] uppercase tracking-wide dark:bg-zinc-950/50">Uses PTO</span>
+                            @endif
+                        </span>
                         @endforeach
                     </div>
                 </div>
