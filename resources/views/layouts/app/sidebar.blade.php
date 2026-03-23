@@ -11,22 +11,31 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
+                <flux:sidebar.group :heading="__('PTO')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('Overview') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                    @if (auth()->user()->isAdmin())
+                        <flux:sidebar.item icon="users" :href="route('admin.employees')" :current="request()->routeIs('admin.employees')" wire:navigate>
+                            {{ __('Active employees') }}
+                        </flux:sidebar.item>
+                        <flux:sidebar.item icon="check-circle" :href="route('admin.approvals')" :current="request()->routeIs('admin.approvals')" wire:navigate>
+                            {{ __('Approve requests') }}
+                        </flux:sidebar.item>
+                    @endif
             </flux:sidebar.nav>
 
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
+                <flux:sidebar.item icon="folder-git-2" href="{{ route('leave-requests.create') }}" wire:navigate>
+                    {{ __('Request leave') }}
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
+                <flux:sidebar.item icon="book-open-text" href="{{ route('leave-requests.index') }}" wire:navigate>
+                    {{ __('My requests') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
