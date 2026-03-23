@@ -6,12 +6,12 @@
                     <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-500 dark:text-blue-300">Implementation foundation</p>
                     <h1 class="text-3xl font-semibold text-zinc-950 dark:text-white">Small-company leave management, shaped around the README vision.</h1>
                     <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-300">
-                        The project now has the core PTO domain schema, initial leave types, seeded demo users, and a dashboard
-                        that reflects the agreed v1 policies for accruals, approval flow, and shared visibility.
+                        Use the employee request flow to submit paid leave directly from the app. This dashboard now highlights
+                        your own PTO balance, your latest requests, and quick links to create a new request.
                     </p>
                 </div>
                 <div class="rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-100">
-                    MySQL-ready configuration is included via the environment defaults.
+                    Ready to submit vacation or paid leave requests.
                 </div>
             </div>
         </section>
@@ -26,22 +26,23 @@
                 <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ $stats['leaveTypes'] }}</p>
             </div>
             <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">Pending requests</p>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Your pending requests</p>
                 <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ $stats['pendingRequests'] }}</p>
             </div>
             <div class="rounded-3xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-                <p class="text-sm text-zinc-500 dark:text-zinc-400">Accrued PTO seeded</p>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400">Your PTO balance</p>
                 <p class="mt-3 text-3xl font-semibold text-zinc-950 dark:text-white">{{ number_format((float) $stats['ptoAccruals'], 1) }}</p>
             </div>
         </section>
 
         <section class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
             <div class="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-                <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">Upcoming requests</h2>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">Sample requests seeded from the new leave domain tables.</p>
+                        <h2 class="text-lg font-semibold text-zinc-950 dark:text-white">Your recent requests</h2>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">Track the requests you have already submitted and jump into a new one.</p>
                     </div>
+                    <a href="{{ route('leave-requests.create') }}" class="inline-flex w-fit items-center rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500">Request leave</a>
                 </div>
 
                 <div class="mt-6 space-y-4">
@@ -49,7 +50,7 @@
                         <div class="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
                             <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                                 <div>
-                                    <p class="font-medium text-zinc-950 dark:text-white">{{ $request->user->name }}</p>
+                                    <p class="font-medium text-zinc-950 dark:text-white">{{ auth()->user()->name }}</p>
                                     <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $request->start_date->format('M j, Y') }} - {{ $request->end_date->format('M j, Y') }}</p>
                                 </div>
                                 <span class="inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold" style="background-color: {{ $request->leaveType->color }}20; color: {{ $request->leaveType->color }};">
@@ -59,7 +60,7 @@
                             <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-300">{{ $request->total_days }} day(s) · {{ str_replace('_', ' ', $request->duration_type) }}</p>
                         </div>
                     @empty
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">No leave requests have been created yet.</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">You have not submitted any leave requests yet.</p>
                     @endforelse
                 </div>
             </div>

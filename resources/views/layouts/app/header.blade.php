@@ -18,25 +18,16 @@
             <flux:spacer />
 
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:tooltip :content="__('Search')" position="bottom">
-                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
+                <flux:tooltip :content="__('Request leave')" position="bottom">
+                    <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="plus" :href="route('leave-requests.create')" :label="__('Request leave')" wire:navigate />
                 </flux:tooltip>
-                <flux:tooltip :content="__('Repository')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="folder-git-2"
-                        href="#"
-                        target="_blank"
-                        :label="__('Repository')"
-                    />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Documentation')" position="bottom">
+                <flux:tooltip :content="__('My requests')" position="bottom">
                     <flux:navbar.item
                         class="h-10 max-lg:hidden [&>div>svg]:size-5"
                         icon="book-open-text"
-                        href="#"
-                        target="_blank"
-                        :label="__('Documentation')"
+                        :href="route('leave-requests.index')"
+                        :label="__('My requests')"
+                        wire:navigate
                     />
                 </flux:tooltip>
             </flux:navbar>
@@ -54,7 +45,7 @@
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('PTO')">
                     <flux:sidebar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard')  }}
+                        {{ __('Overview')  }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
@@ -62,11 +53,11 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="#" target="_blank">
-                    {{ __('Leave policies') }}
+                <flux:sidebar.item icon="folder-git-2" href="{{ route('leave-requests.create') }}" wire:navigate>
+                    {{ __('Request leave') }}
                 </flux:sidebar.item>
-                <flux:sidebar.item icon="book-open-text" href="#" target="_blank">
-                    {{ __('Request history') }}
+                <flux:sidebar.item icon="book-open-text" href="{{ route('leave-requests.index') }}" wire:navigate>
+                    {{ __('My requests') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
         </flux:sidebar>

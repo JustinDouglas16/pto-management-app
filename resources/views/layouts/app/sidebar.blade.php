@@ -21,12 +21,12 @@
             <flux:spacer />
 
             <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="#" target="_blank">
-                    {{ __('Leave policies') }}
+                <flux:sidebar.item icon="folder-git-2" href="{{ route('leave-requests.create') }}" wire:navigate>
+                    {{ __('Request leave') }}
                 </flux:sidebar.item>
 
-                <flux:sidebar.item icon="book-open-text" href="#" target="_blank">
-                    {{ __('Request history') }}
+                <flux:sidebar.item icon="book-open-text" href="{{ route('leave-requests.index') }}" wire:navigate>
+                    {{ __('My requests') }}
                 </flux:sidebar.item>
             </flux:sidebar.nav>
 
